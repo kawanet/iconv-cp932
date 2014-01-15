@@ -11,7 +11,7 @@
   },
   "keywords": [
     "iconv",
-    "encode"
+    "encode",
     "CP932",
     "Shift_JIS",
     "Unicode"
