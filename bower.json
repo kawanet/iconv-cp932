@@ -10,11 +10,13 @@
   "main": "public/iconv-cp932.min.js",
   "ignore": [
     "**/.*",
+    "*.md",
+    "Gruntfile.js",
+    "bower.json",
+    "index.js",
     "mappings",
     "node_modules",
-    "tasks",
-    "*.js",
-    "*.json",
-    "*.md"
+    "package.json",
+    "tasks"
   ]
 }
