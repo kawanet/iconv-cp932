@@ -1,0 +1,19 @@
+{
+  "name": "iconv-cp932",
+  "version": "0.0.1",
+  "homepage": "",
+  "description": "encodeURIComponent for CP932 a.k.a. Shift_JIS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kawanet/iconv-cp932.git"
+  },
+  "ignore": [
+    "**/.*",
+    "mappings",
+    "node_modules",
+    "tasks",
+    "*.js",
+    "*.json"
+    "*.md"
+  ]
+}

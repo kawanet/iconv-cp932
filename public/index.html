@@ -1,0 +1,35 @@
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>iconv-cp932 demo</title>
+  <script src="iconv-cp932.min.js" charset="utf-8"></script>
+</head>
+<body>
+
+<h2>
+  iconv-cp932 demo
+</h2>
+<p>
+  <textarea id="input" rows="15" cols="60">
+　ある日の事でございます。
+　お釈迦様は極楽の蓮池のふちを、独りでぶらぶらお歩きになっていらっしゃいました。池の中に咲いている蓮の花は、みんな玉のようにまっ白で、そのまん中にある金色の蕊からは、何とも言えない好い匂いが、絶間なくあたりへ溢れて居ります。極楽は丁度朝なのでございましょう。
+
+　やがて御釈迦様はその池のふちにお佇みになって、水の面を蔽っている蓮の葉の間から、ふと下の様子を御覧になりました。この極楽の蓮池の下は、丁度地獄の底に当って居りますから、水晶のような水を透き徹して、三途の河や針の山の景色が、丁度覗き眼鏡を見るように、はっきりと見えるのでございます。
+</textarea>
+</p>
+<p>
+  <button onclick="tap();">CLICK THIS</button>
+</p>
+
+<script>
+function tap() {
+  var str = document.getElementById("input").value;
+  var prefix = "data:text/plain;charset=Shift_JIS,";
+  // var prefix = "data:text/comma-separated-values;charset=Shift_JIS,";
+  var href = prefix + IconvCP932.encodeURIComponent(str);
+  window.open(href, "_blank");
+}
+</script>
+
+</body>
+</html>
