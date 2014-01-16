@@ -1,1 +1,117 @@
-iconv-cp932
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Iconv-cp932 by kawanet</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Iconv-cp932</h1>
+        <h2>encodeURIComponent for CP932 (Shift_JIS)</h2>
+        <a href="https://github.com/kawanet/iconv-cp932" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="iconv-cp932" class="anchor" href="#iconv-cp932"><span class="octicon octicon-link"></span></a>iconv-cp932</h1>
+
+<p>encodeURIComponent for CP932 (Shift_JIS)</p>
+
+<h2>
+<a name="nodejs" class="anchor" href="#nodejs"><span class="octicon octicon-link"></span></a>Node.js</h2>
+
+<div class="highlight highlight-sh"><pre>npm install iconv-cp932
+</pre></div>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">IconvCP932</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">"iconv-cp932"</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="s2">"美しい日本語"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">encoded</span> <span class="o">=</span> <span class="nx">IconvCP932</span><span class="p">.</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">encoded</span><span class="p">);</span> <span class="c1">// =&gt; "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"</span>
+</pre></div>
+
+<h2>
+<a name="browser" class="anchor" href="#browser"><span class="octicon octicon-link"></span></a>Browser</h2>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"iconv-cp932.min.js"</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="kd">function</span> <span class="nx">tap</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"input"</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">prefix</span> <span class="o">=</span> <span class="s2">"data:text/plain;charset=Shift_JIS,"</span><span class="p">;</span>
+    <span class="c1">// var prefix = "data:text/comma-separated-values;charset=Shift_JIS,";</span>
+    <span class="kd">var</span> <span class="nx">href</span> <span class="o">=</span> <span class="nx">prefix</span> <span class="o">+</span> <span class="nx">IconvCP932</span><span class="p">.</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">href</span><span class="p">,</span> <span class="s2">"_blank"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;textarea</span> <span class="na">id=</span><span class="s">"input"</span> <span class="na">rows=</span><span class="s">"5"</span> <span class="na">cols=</span><span class="s">"60"</span><span class="nt">&gt;</span>美しい日本語<span class="nt">&lt;/textarea&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"tap();"</span><span class="nt">&gt;</span>CLICK THIS<span class="nt">&lt;/button&gt;</span>
+</pre></div>
+
+<h2>
+<a name="links" class="anchor" href="#links"><span class="octicon octicon-link"></span></a>Links</h2>
+
+<ul>
+<li>Sources on GitHub - <a href="https://github.com/kawanet/iconv-cp932">https://github.com/kawanet/iconv-cp932</a>
+</li>
+<li>Browser Build - <a href="https://raw.github.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js">https://raw.github.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js</a>
+</li>
+</ul><h2>
+<a name="mit-licence" class="anchor" href="#mit-licence"><span class="octicon octicon-link"></span></a>MIT Licence</h2>
+
+<p>Copyright 2014 <a href="https://github.com/kawanet" class="user-mention">@kawanet</a> Yusuke Kawasaki</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/kawanet/iconv-cp932/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/kawanet/iconv-cp932/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/kawanet/iconv-cp932"></a> is maintained by <a href="https://github.com/kawanet">kawanet</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
