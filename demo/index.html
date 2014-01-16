@@ -1,33 +1,88 @@
-<html lang="ja">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>iconv-cp932 demo</title>
-  <script src="https://raw.github.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js" charset="utf-8"></script>
-</head>
-<body>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--
+  <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+  -->
+  <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="../stylesheets/pygment_trac.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="../stylesheets/print.css" media="print" />
 
-<h2>iconv-cp932 demo</h2>
-<p>
-  ブラウザ上の JavaScript で Shift_JIS テキストデータを生成して、ファイルダウンロードを行うデモです。<br>
-  <a href="https://github.com/kawanet/iconv-cp932" target="_blank">iconv-cp932</a> を利用することで、日本語を含む CSV ファイルをダウンロードして Excel で開くことができます。<br>
-  比較用に UTF-8 のダウンロードも可能です。ブラウザ上のダウンロードにならずに、別ウインドウで開きます。<br>
-</p>
-<h3>text</h3>
-  <textarea id="text_input" rows="15" cols="70" wrap="soft"
-    >ある日の事でございます。
+  <!--[if lt IE 9]>
+  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <script src="https://raw.github.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js" charset="utf-8"></script>
+
+  <script>
+    function tap(id, type, utf8) {
+      var str = document.getElementById(id).value;
+      if (utf8) {
+        type += ";charset=UTF-8";
+        str = encodeURIComponent(str);
+      } else {
+        type += ";charset=Shift_JIS";
+        str = IconvCP932.encodeURIComponent(str);
+      }
+      var href = "data:" + type + "," + str;
+      window.open(href, "_blank");
+    }
+  </script>
+
+  <style>
+    button { height: 30px; font-size: 15px; margin: 4px 0; border-radius: 4px; background-color: #eee; border-color: #ccc; color: #336; padding: 0 1em; }
+    textarea { height: 17em; width: 95%; font-size: 13px; border: solid 1px #999; border-radius: 4px; }
+  </style>
+
+  <title>IconvCP932 Demo</title>
+</head>
+
+<body>
+<header>
+  <div class="inner">
+    <h1>Iconv-cp932</h1>
+    <h2>encodeURIComponent for CP932 (Shift_JIS)</h2>
+    <a href="https://github.com/kawanet/iconv-cp932" class="button"><small>View project on</small>GitHub</a>
+  </div>
+</header>
+
+<div id="content-wrapper">
+  <div class="inner clearfix">
+    <section id="main-content">
+      <h1>
+        <a name="iconv-cp932" class="anchor" href="#iconv-cp932"><span class="octicon octicon-link"></span></a>iconv-cp932 demo</h1>
+
+      <p>
+        ブラウザ上の JavaScript で Shift_JIS テキストデータを生成して、ファイルダウンロードを行うデモです。
+        <a href="https://github.com/kawanet/iconv-cp932" target="_blank">iconv-cp932</a> を利用することで、日本語を含む CSV ファイルをダウンロードして Excel で開くことができます。
+        比較用に UTF-8 のダウンロードも可能です。ブラウザ上のダウンロードにならずに、別ウインドウで開きます。
+      </p>
+
+      <h2><a name="text" class="anchor" href="#text"><span class="octicon octicon-link"></span></a>Text</h2>
+
+      <textarea id="text_input" wrap="soft"
+        >　ある日の事でございます。
 　お釈迦様は極楽の蓮池のふちを、独りでぶらぶらお歩きになっていらっしゃいました。池の中に咲いている蓮の花は、みんな玉のようにまっ白で、そのまん中にある金色の蕊からは、何とも言えない好い匂いが、絶間なくあたりへ溢れて居ります。極楽は丁度朝なのでございましょう。
 
 　やがて御釈迦様はその池のふちにお佇みになって、水の面を蔽っている蓮の葉の間から、ふと下の様子を御覧になりました。この極楽の蓮池の下は、丁度地獄の底に当って居りますから、水晶のような水を透き徹して、三途の河や針の山の景色が、丁度覗き眼鏡を見るように、はっきりと見えるのでございます。
-</textarea>
-<p>
-  <button onclick="tap('text_input', 'text/plain');">text/plain;charset=Shift_JIS</button><br>
-  <button onclick="tap('text_input', 'text/plain', true);">text/plain;charset=utf-8</button><br>
-  <button onclick="tap('text_input', 'application/octet-stream');">application/octet-stream;charset=Shift_JIS</button><br>
-  <button onclick="tap('text_input', 'application/octet-stream', true);">application/octet-stream;charset=utf-8</button>
-</p>
-<h3>csv</h3>
-  <textarea id="csv_input" rows="15" cols="70" wrap="off"
-    >13101,"100  ","1000000","ﾄｳｷｮｳﾄ","ﾁﾖﾀﾞｸ","ｲｶﾆｹｲｻｲｶﾞﾅｲﾊﾞｱｲ","東京都","千代田区","以下に掲載がない場合",0,0,0,0,0,0
+      </textarea>
+      <p>
+        <button onclick="tap('text_input', 'text/plain');">text Shift_JIS</button> <code>text/plain;charset=Shift_JIS</code><br>
+        <button onclick="tap('text_input', 'text/plain', true);">text UTF-8</button> <code>text/plain;charset=utf-8</code><br>
+        <button onclick="tap('text_input', 'application/octet-stream');">octet-stream Shift_JIS</button> <code>application/octet-stream;charset=Shift_JIS</code><br>
+        <button onclick="tap('text_input', 'application/octet-stream', true);">octet-stream UTF-8</button> <code>application/octet-stream;charset=utf-8</code>
+      </p>
+
+      <p>
+      </p>
+
+      <h2><a name="csv" class="anchor" href="#csv"><span class="octicon octicon-link"></span></a>CSV</h2>
+
+      <textarea id="csv_input" wrap="off"
+>13101,"100  ","1000000","ﾄｳｷｮｳﾄ","ﾁﾖﾀﾞｸ","ｲｶﾆｹｲｻｲｶﾞﾅｲﾊﾞｱｲ","東京都","千代田区","以下に掲載がない場合",0,0,0,0,0,0
 13101,"102  ","1020072","ﾄｳｷｮｳﾄ","ﾁﾖﾀﾞｸ","ｲｲﾀﾞﾊﾞｼ","東京都","千代田区","飯田橋",0,0,1,0,0,0
 13101,"102  ","1020082","ﾄｳｷｮｳﾄ","ﾁﾖﾀﾞｸ","ｲﾁﾊﾞﾝﾁｮｳ","東京都","千代田区","一番町",0,0,0,0,0,0
 13101,"101  ","1010032","ﾄｳｷｮｳﾄ","ﾁﾖﾀﾞｸ","ｲﾜﾓﾄﾁｮｳ","東京都","千代田区","岩本町",0,0,1,0,0,0
@@ -37,35 +92,29 @@
 13101,"100  ","1006890","ﾄｳｷｮｳﾄ","ﾁﾖﾀﾞｸ","ｵｵﾃﾏﾁｼﾞｪｲｴｲﾋﾞﾙ(ﾁｶｲ･ｶｲｿｳﾌﾒｲ)","東京都","千代田区","大手町ＪＡビル（地階・階層不明）",0,0,0,0,0,0
 13101,"100  ","1006801","ﾄｳｷｮｳﾄ","ﾁﾖﾀﾞｸ","ｵｵﾃﾏﾁｼﾞｪｲｴｲﾋﾞﾙ(1ｶｲ)","東京都","千代田区","大手町ＪＡビル（１階）",0,0,0,0,0,0
 13101,"100  ","1006802","ﾄｳｷｮｳﾄ","ﾁﾖﾀﾞｸ","ｵｵﾃﾏﾁｼﾞｪｲｴｲﾋﾞﾙ(2ｶｲ)","東京都","千代田区","大手町ＪＡビル（２階）",0,0,0,0,0,0
-  </textarea>
-<p>
-  <button onclick="tap('csv_input', 'text/comma-separated-values');">text/comma-separated-values;charset=Shift_JIS</button><br>
-  <button onclick="tap('csv_input', 'text/comma-separated-values', true);">text/comma-separated-values;charset=utf-8</button>
-</p>
+      </textarea>
+      <p>
+        <button onclick="tap('csv_input', 'text/comma-separated-values');">CSV Shift_JIS</button> <code>text/comma-separated-values;charset=Shift_JIS</code><br>
+        <button onclick="tap('csv_input', 'text/comma-separated-values', true);">CSV utf-8</button> <code>text/comma-separated-values;charset=utf-8</code>
+      </p>
 
-<pre>
-  /**
-   * @author <a href="http://www.kawa.net/" target="_blank">kawanet</a>
-   * @see <a href="https://github.com/kawanet/iconv-cp932" target="_blank">https://github.com/kawanet/iconv-cp932</a>
-   * @see http://www.aozora.gr.jp/cards/000879/files/92_14545.html (蜘蛛の糸; 芥川龍之介; 青空文庫)
-   * @see http://www.post.japanpost.jp/zipcode/dl/kogaki.html (郵便番号データ; 日本郵便)
-   */
-</pre>
+      <h2><a name="links" class="anchor" href="#links"><span class="octicon octicon-link"></span></a>Link</h2>
 
-<script>
-  function tap(id, type, utf8) {
-    var str = document.getElementById(id).value;
-    if (utf8) {
-      type += ";charset=UTF-8";
-      str = encodeURIComponent(str);
-    } else {
-      type += ";charset=Shift_JIS";
-      str = IconvCP932.encodeURIComponent(str);
-    }
-    var href = "data:" + type + "," + str;
-    window.open(href, "_blank");
-  }
-</script>
+      <ul>
+        <li>http://www.aozora.gr.jp/cards/000879/files/92_14545.html (蜘蛛の糸; 芥川龍之介; 青空文庫)</li>
+        <li>http://www.post.japanpost.jp/zipcode/dl/kogaki.html (郵便番号データ; 日本郵便)</li>
+      </ul>
+
+    </section>
+
+    <aside id="sidebar">
+      <p class="repo-owner"><a href="https://github.com/kawanet/iconv-cp932">iconv-cp932</a> is maintained by <a href="https://github.com/kawanet">kawanet</a>.</p>
+
+      <p>This page uses the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+    </aside>
+  </div>
+</div>
+
 
 </body>
 </html>
