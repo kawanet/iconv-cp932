@@ -36,6 +36,7 @@ console.log(encoded); // => "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"
 
 - Sources on GitHub - https://github.com/kawanet/iconv-cp932
 - Browser Build - https://raw.github.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js
+- Live Demo - http://kawanet.github.io/iconv-cp932/demo/
 
 ## MIT Licence
 
