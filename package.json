@@ -1,27 +1,37 @@
 {
   "name": "iconv-cp932",
-  "version": "0.0.1",
   "description": "encodeURIComponent for CP932 (Shift_JIS)",
-  "main": "index.js",
+  "version": "0.9.0",
   "author": "kawanet",
+  "devDependencies": {
+    "browserify": "^16.2.2",
+    "jshint": "^2.9.5",
+    "mocha": "^5.2.0"
+  },
+  "jshintConfig": {
+    "globals": {},
+    "mocha": true,
+    "node": true,
+    "undef": true,
+    "unused": true,
+    "validthis": true
+  },
+  "keywords": [
+    "CP932",
+    "Shift_JIS",
+    "Unicode",
+    "encode",
+    "iconv"
+  ],
   "license": "MIT",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/kawanet/iconv-cp932.git"
   },
-  "keywords": [
-    "iconv",
-    "encode",
-    "CP932",
-    "Shift_JIS",
-    "Unicode"
-  ],
-  "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.8.0",
-    "browserify": "~3.20.0",
-    "grunt-browserify": "~1.3.0",
-    "grunt-contrib-uglify": "~0.2.7",
-    "grunt-quote-json": "~0.1.1"
+  "scripts": {
+    "fixpack": "fixpack",
+    "jshint": "./node_modules/.bin/jshint .",
+    "mocha": "./node_modules/.bin/mocha test"
   }
 }
