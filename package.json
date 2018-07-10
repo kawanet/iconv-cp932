@@ -38,6 +38,7 @@
     "fixpack": "fixpack",
     "jshint": "./node_modules/.bin/jshint .",
     "make": "make",
-    "mocha": "./node_modules/.bin/mocha test"
+    "mocha": "./node_modules/.bin/mocha test",
+    "test": "npm run jshint && npm run mocha"
   }
 }
