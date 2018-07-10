@@ -1,0 +1,4 @@
+**/*.browserify.js
+**/*.min.js
+*~
+node_modules

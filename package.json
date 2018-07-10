@@ -3,11 +3,16 @@
   "description": "encodeURIComponent for CP932 (Shift_JIS)",
   "version": "0.9.0",
   "author": "kawanet",
+  "bugs": {
+    "url": "https://github.com/kawanet/iconv-cp932/issues"
+  },
   "devDependencies": {
     "browserify": "^16.2.2",
     "jshint": "^2.9.5",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "uglify-js": "^3.4.4"
   },
+  "homepage": "https://github.com/kawanet/iconv-cp932#readme",
   "jshintConfig": {
     "globals": {},
     "mocha": true,
@@ -27,11 +32,12 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kawanet/iconv-cp932.git"
+    "url": "git+https://github.com/kawanet/iconv-cp932.git"
   },
   "scripts": {
     "fixpack": "fixpack",
     "jshint": "./node_modules/.bin/jshint .",
+    "make": "make",
     "mocha": "./node_modules/.bin/mocha test"
   }
 }

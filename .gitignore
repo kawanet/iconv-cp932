@@ -1,5 +1,7 @@
+*.browserify.js
 *~
-node_modules/
-.idea/
 .DS_Store
 .Thumbs
+.idea/
+node_modules/
+tmp/
