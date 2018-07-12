@@ -22,7 +22,7 @@ console.log(encoded); // => "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"
 <script>
   function tap() {
     var str = document.getElementById("input").value;
-    var prefix = "data:text/plain;charset=Shift_JIS,";
+    var prefix = "data:application/octet-stream;charset=Shift_JIS,";
     // var prefix = "data:text/comma-separated-values;charset=Shift_JIS,";
     var href = prefix + IconvCP932.encodeURIComponent(str);
     window.open(href, "_blank");
@@ -35,12 +35,12 @@ console.log(encoded); // => "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"
 ## Links
 
 - Sources on GitHub - https://github.com/kawanet/iconv-cp932
-- Browser Build - https://raw.github.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js
+- Browser Build - https://rawgit.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js (24KB)
 - Live Demo - http://kawanet.github.io/iconv-cp932/demo/
 
 ## MIT Licence
 
-Copyright 2014 @kawanet Yusuke Kawasaki
+Copyright 2014-2018 @kawanet Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
