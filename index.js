@@ -33,7 +33,7 @@ function getTable() {
     mapping[start].split("").forEach(function(ustr) {
       var jstr;
       if (jcode > 255) {
-        jstr = "%" + hex(jcode >> 8) + "%" + hex(jcode);
+        jstr = "%" + hex(jcode >> 8) + "%" + hex(jcode & 255);
       } else if (ustr === encodeURIComponent(ustr)) {
         jstr = ustr;
       } else {
@@ -47,6 +47,6 @@ function getTable() {
   return table;
 
   function hex(code) {
-    return (code < 16 ? "0" : "") + (code & 255).toString(16).toUpperCase();
+    return (code < 16 ? "0" : "") + (code).toString(16).toUpperCase();
   }
 }
