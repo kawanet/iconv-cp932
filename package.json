@@ -1,7 +1,7 @@
 {
   "name": "iconv-cp932",
   "description": "encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "author": "kawanet",
   "bugs": {
     "url": "https://github.com/kawanet/iconv-cp932/issues"

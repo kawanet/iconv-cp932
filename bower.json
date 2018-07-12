@@ -1,6 +1,6 @@
 {
   "name": "iconv-cp932",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "homepage": "",
   "description": "encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)",
   "repository": {
