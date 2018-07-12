@@ -1,6 +1,6 @@
 # iconv-cp932
 
-encodeURIComponent for CP932 (Shift_JIS)
+encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)
 
 ## Node.js
 
@@ -10,9 +10,14 @@ npm install iconv-cp932
 
 ```js
 var IconvCP932 = require("iconv-cp932");
-var str = "美しい日本語";
-var encoded = IconvCP932.encodeURIComponent(str);
+
+var unicode = "美しい日本語";
+
+var encoded = IconvCP932.encodeURIComponent(unicode);
 console.log(encoded); // => "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"
+
+var decoded = IconvCP932.decodeURIComponent(encoded);
+console.log(decoded); // => "美しい日本語"
 ```
 
 ## Browser

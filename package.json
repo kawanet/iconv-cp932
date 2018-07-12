@@ -1,6 +1,6 @@
 {
   "name": "iconv-cp932",
-  "description": "encodeURIComponent for CP932 (Shift_JIS)",
+  "description": "encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)",
   "version": "0.9.0",
   "author": "kawanet",
   "bugs": {
@@ -14,7 +14,9 @@
   },
   "homepage": "https://github.com/kawanet/iconv-cp932#readme",
   "jshintConfig": {
-    "globals": {},
+    "globals": {
+      "unescape": true
+    },
     "mocha": true,
     "node": true,
     "undef": true,
@@ -24,7 +26,7 @@
   "keywords": [
     "CP932",
     "Shift_JIS",
-    "Unicode",
+    "decode",
     "encode",
     "iconv"
   ],
