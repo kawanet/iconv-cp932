@@ -1,16 +1,16 @@
 {
   "name": "iconv-cp932",
   "description": "encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "kawanet",
   "bugs": {
     "url": "https://github.com/kawanet/iconv-cp932/issues"
   },
   "devDependencies": {
-    "browserify": "^16.2.2",
-    "jshint": "^2.9.5",
-    "mocha": "^5.2.0",
-    "uglify-js": "^3.4.4"
+    "browserify": "^16.2.3",
+    "jshint": "^2.10.2",
+    "mocha": "^6.1.4",
+    "uglify-js": "^3.5.15"
   },
   "homepage": "https://github.com/kawanet/iconv-cp932#readme",
   "jshintConfig": {
