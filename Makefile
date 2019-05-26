@@ -3,6 +3,7 @@
 MIN_JS=public/iconv-cp932.min.js
 TMP_JS=tmp/iconv-cp932.browserify.js
 SRC_JS=index.js
+MAPPING_TXT=mappings/CP932.TXT
 MAPPING_JSON=mappings/cp932.json
 
 CLASS=IconvCP932
@@ -21,9 +22,11 @@ $(MIN_JS): $(TMP_JS)
 
 $(TMP_JS): $(SRC_JS) $(MAPPING_JSON)
 	./node_modules/.bin/browserify $(SRC_JS) -s $(CLASS) -o $@ --debug
-	perl -i -pe 's#/mappings/#/#g' $@
 
-$(MAPPING_JSON):
+$(MAPPING_TXT):
+	grep -v "^#" mappings/README.md | xargs curl -o $@
+
+$(MAPPING_JSON): $(MAPPING_TXT)
 	./script/make-table.js
 
 mocha:
