@@ -1,4 +1,4 @@
 [submodule "gh-pages"]
 	path = gh-pages
-	url = git@github.com:kawanet/iconv-cp932.git
+	url = git://github.com/kawanet/iconv-cp932
 	branch = gh-pages
