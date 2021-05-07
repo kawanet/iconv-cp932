@@ -1,12 +1,11 @@
 # iconv-cp932
 
+[![Node.js CI](https://github.com/kawanet/iconv-cp932/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/iconv-cp932/actions/)
+[![npm version](https://badge.fury.io/js/iconv-cp932.svg)](https://badge.fury.io/js/iconv-cp932)
+
 encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)
 
 ## Node.js
-
-```sh
-npm install iconv-cp932
-```
 
 ```js
 const IconvCP932 = require("iconv-cp932");
@@ -23,7 +22,7 @@ console.log(decoded); // => "美しい日本語"
 ## Browser
 
 ```html
-<script src="iconv-cp932.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js" charset="utf-8"></script>
 <script>
   function tap() {
     const str = document.getElementById("input").value;
@@ -40,12 +39,12 @@ console.log(decoded); // => "美しい日本語"
 ## Links
 
 - Sources on GitHub - https://github.com/kawanet/iconv-cp932
-- Browser Build - https://rawgit.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js (24KB)
+- Browser Build - https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js (24KB)
 - Live Demo - http://kawanet.github.io/iconv-cp932/demo/
 
 ## MIT Licence
 
-Copyright 2014-2019 @kawanet Yusuke Kawasaki
+Copyright 2014-2021 @kawanet Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
