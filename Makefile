@@ -18,7 +18,7 @@ clean:
 	/bin/rm -f $(ALL)
 
 $(MIN_JS): $(TMP_JS)
-	./node_modules/.bin/uglifyjs -c -m -o $@ $<
+	./node_modules/.bin/terser -c -m -o $@ $<
 
 $(TMP_JS): $(SRC_JS) $(MAPPING_JSON)
 	./node_modules/.bin/browserify $(SRC_JS) -s $(CLASS) -o $@ --debug
