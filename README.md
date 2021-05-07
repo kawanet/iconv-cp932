@@ -9,14 +9,14 @@ npm install iconv-cp932
 ```
 
 ```js
-var IconvCP932 = require("iconv-cp932");
+const IconvCP932 = require("iconv-cp932");
 
-var unicode = "美しい日本語";
+const unicode = "美しい日本語";
 
-var encoded = IconvCP932.encodeURIComponent(unicode);
+const encoded = IconvCP932.encodeURIComponent(unicode);
 console.log(encoded); // => "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"
 
-var decoded = IconvCP932.decodeURIComponent(encoded);
+const decoded = IconvCP932.decodeURIComponent(encoded);
 console.log(decoded); // => "美しい日本語"
 ```
 
@@ -26,10 +26,10 @@ console.log(decoded); // => "美しい日本語"
 <script src="iconv-cp932.min.js" charset="utf-8"></script>
 <script>
   function tap() {
-    var str = document.getElementById("input").value;
-    var prefix = "data:application/octet-stream;charset=Shift_JIS,";
-    // var prefix = "data:text/comma-separated-values;charset=Shift_JIS,";
-    var href = prefix + IconvCP932.encodeURIComponent(str);
+    const str = document.getElementById("input").value;
+    const prefix = "data:application/octet-stream;charset=Shift_JIS,";
+    // const prefix = "data:text/comma-separated-values;charset=Shift_JIS,";
+    const href = prefix + IconvCP932.encodeURIComponent(str);
     window.open(href, "_blank");
   }
 </script>

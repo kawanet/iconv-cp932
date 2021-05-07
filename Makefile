@@ -1,38 +1,45 @@
 #!/usr/bin/env bash -c make
 
 MIN_JS=public/iconv-cp932.min.js
-TMP_JS=tmp/iconv-cp932.browserify.js
-SRC_JS=index.js
-MAPPING_TXT=mappings/CP932.TXT
-MAPPING_JSON=mappings/cp932.json
+ALL=$(MIN_JS)
 
-CLASS=IconvCP932
+all: $(ALL) build/test.js
 
-ALL=$(MIN_JS) $(TMP_JS)
-
-all: $(MIN_JS)
-
-test: all jshint mocha
+test: all mocha
 
 clean:
-	/bin/rm -f $(ALL)
+	/bin/rm -f $(ALL) build/*.js
 
-$(MIN_JS): $(TMP_JS)
+$(MIN_JS): build/bundle.js
 	./node_modules/.bin/terser -c -m -o $@ $<
 
-$(TMP_JS): $(SRC_JS) $(MAPPING_JSON)
-	./node_modules/.bin/browserify $(SRC_JS) -s $(CLASS) -o $@ --debug
+build/bundle.js: src/iconv-cp932.js mappings/cp932.json
+	mkdir -p build
+	echo 'var IconvCP932 = (function(component_1, mapping, exports) {' > $@
+	cat src/iconv-cp932.js >> $@
+	echo 'return exports;' >> $@
+	echo '})({encode: encodeURIComponent},' >> $@
+	cat mappings/cp932.json >> $@
+	echo ', ("undefined" !== typeof exports ? exports : {}))' >> $@
+	perl -i -pe 's#^ *("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)#// $$&#mg' $@
+	perl -i -pe 's#^ *(var .* = require\()#// $$&#mg' $@
 
-$(MAPPING_TXT):
+mappings/CP932.TXT:
 	grep -v "^#" mappings/README.md | xargs curl -o $@
 
-$(MAPPING_JSON): $(MAPPING_TXT)
+mappings/cp932.json: mappings/CP932.TXT
 	./script/make-table.js
 
 mocha:
 	./node_modules/.bin/mocha test
 
-jshint:
-	./node_modules/.bin/jshint .
+src/%.js: src/%.ts
+	./node_modules/.bin/tsc -p .
+
+build/test.js: $(MIN_JS) test/*.js
+	./node_modules/.bin/browserify --list ./test/*.js \
+		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ]
+	./node_modules/.bin/browserify -o $@ ./test/*.js \
+		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ]
 
 .PHONY: all clean test
