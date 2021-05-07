@@ -15,6 +15,16 @@
     "terser": "^5.7.0",
     "typescript": "^4.2.4"
   },
+  "files": [
+    "browser/import.js",
+    "mappings/cp932.json",
+    "mappings/README.md",
+    "src/*.js",
+    "*.js",
+    "LICENSE",
+    "README.md",
+    "*.d.ts"
+  ],
   "homepage": "https://github.com/kawanet/iconv-cp932#readme",
   "keywords": [
     "CP932",
@@ -30,11 +40,10 @@
     "url": "git+https://github.com/kawanet/iconv-cp932.git"
   },
   "scripts": {
+    "build": "make",
     "fixpack": "fixpack",
-    "jshint": "./node_modules/.bin/jshint .",
-    "make": "make",
-    "mocha": "./node_modules/.bin/mocha test",
-    "test": "npm run jshint && npm run mocha"
+    "prepack": "npm run build && npm test",
+    "test": "make test"
   },
   "typings": "iconv-cp932.d.ts"
 }

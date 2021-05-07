@@ -6,6 +6,8 @@ ALL=$(MIN_JS)
 all: $(ALL) build/test.js
 
 test: all mocha
+	node -r assert -r ./public/iconv-cp932.min.js -e 'assert.equal(decodeURIComponent("%E7%BE%8E%E3%81%97%E3%81%84%E6%97%A5%E6%9C%AC%E8%AA%9E"), "美しい日本語")'
+	node -r assert -r ./public/iconv-cp932.min.js -e 'assert.equal(encodeURIComponent("美しい日本語"), "%E7%BE%8E%E3%81%97%E3%81%84%E6%97%A5%E6%9C%AC%E8%AA%9E")'
 
 clean:
 	/bin/rm -f $(ALL) build/*.js
