@@ -12,7 +12,7 @@ describe(TITLE, () => {
         assert.equal(encoded, "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA");
     });
 
-    it("encodeURIComponent()", () => {
+    it("decodeURIComponent()", () => {
         const decoded = IconvCP932.decodeURIComponent("%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA");
         assert.equal(decoded, "美しい日本語");
     });
