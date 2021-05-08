@@ -8,6 +8,8 @@ type Tests = { [str: string]: string };
 const tests: Tests = {
     // japanese
     "美しい日本語": "94FC82B582A293FA967B8CEA",
+    // katakana
+    "ｶﾀｶﾅ": "B6C0B6C5",
     // latin-1
     "±×÷": "817D817E8180",
     // invalid
