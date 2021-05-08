@@ -2,10 +2,10 @@
 
 import * as fs from "fs";
 
-function main() {
+function main(src: string, dst: string): void {
     const base = __dirname.replace(/\/[^/]+\/?$/, "");
-    const src = base + "/mappings/CP932.TXT";
-    const dst = base + "/mappings/cp932.json";
+    if (!src) src = base + "/mappings/CP932.TXT";
+    if (!dst) dst = base + "/mappings/cp932.json";
     const map = {} as { [code: string]: string };
     let prev: number;
     let cur: string;
@@ -40,4 +40,4 @@ function main() {
     fs.writeFileSync(dst, json);
 }
 
-main();
+main.apply(null, process.argv.slice(2));

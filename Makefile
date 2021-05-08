@@ -10,7 +10,7 @@ test: all mocha
 	node -r assert -r ./public/iconv-cp932.min.js -e 'assert.equal(encodeURIComponent("美しい日本語"), "%E7%BE%8E%E3%81%97%E3%81%84%E6%97%A5%E6%9C%AC%E8%AA%9E")'
 
 clean:
-	/bin/rm -f $(ALL) build/*.js src/*.js test/*.js
+	/bin/rm -f $(ALL) build/*.js src/*.js test/*.js mappings/*.json
 
 $(MIN_JS): build/bundle.js
 	./node_modules/.bin/terser -c -m -o $@ $<
@@ -29,8 +29,8 @@ build/bundle.js: src/iconv-cp932.js mappings/cp932.json
 mappings/CP932.TXT:
 	grep -v "^#" mappings/README.md | grep http | xargs curl -o $@
 
-mappings/cp932.json: mappings/CP932.TXT
-	./script/make-table.js
+mappings/cp932.json: mappings/CP932.TXT src/make-table.js
+	node src/make-table.js $< $@
 
 mocha: test/*.js
 	./node_modules/.bin/mocha test
