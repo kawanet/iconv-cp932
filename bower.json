@@ -1,8 +1,8 @@
 {
   "name": "iconv-cp932",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "",
-  "description": "encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)",
+  "description": "Lightweight Pure JS character encoding conversion for CP932, Shift_JIS, Windows-31J, IBM 932",
   "repository": {
     "type": "git",
     "url": "https://github.com/kawanet/iconv-cp932.git"
@@ -17,8 +17,8 @@
     "mappings",
     "node_modules",
     "package.json",
-    "script",
+    "src",
     "test",
-    "tmp",
+    "tmp"
   ]
 }

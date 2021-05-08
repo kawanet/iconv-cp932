@@ -3,7 +3,18 @@
 [![Node.js CI](https://github.com/kawanet/iconv-cp932/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/iconv-cp932/actions/)
 [![npm version](https://badge.fury.io/js/iconv-cp932.svg)](https://badge.fury.io/js/iconv-cp932)
 
-encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)
+Lightweight Pure JS character encoding conversion for CP932, Shift_JIS, Windows-31J, IBM 932
+
+| method | input encoding | input type | output encoding | output type |
+|----|----|----|----|----|
+| `encode()` | UTF-8 | `string` | CP932 | `Uint8Array` |
+| `decode()` | CP932 | `Uint8Array` | UTF-8 | `string` |
+| `encodeURIComponent()` | UTF-8 | `string` | CP932 URL encoded | `string` |
+| `decodeURIComponent()` | CP932 URL encoded | `string` | UTF-8 | `string` |
+
+See TypeScript declaration
+[iconv-cp932.d.ts](https://github.com/kawanet/iconv-cp932/blob/master/iconv-cp932.d.ts)
+for more details.
 
 ## Node.js
 
@@ -45,7 +56,7 @@ console.log(decoded); // => "美しい日本語"
 ## Links
 
 - Sources on GitHub - https://github.com/kawanet/iconv-cp932
-- Browser Build - https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js (24KB)
+- Browser Build - https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js (25KB)
 - Live Demo - http://kawanet.github.io/iconv-cp932/demo/
 
 ## MIT Licence
