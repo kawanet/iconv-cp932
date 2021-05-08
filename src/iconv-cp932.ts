@@ -30,7 +30,7 @@ let unknownCache = {} as { [str: string]: Uint8Array };
 export function encodeURIComponent(str: string): string {
     if (!encodeTable) encodeTable = getEncodeTable();
 
-    return str.split("").map(c => encodeTable[c] || UNKNOWN).join("");
+    return str.replace(/./sg, c => encodeTable[c] || UNKNOWN);
 }
 
 /**
