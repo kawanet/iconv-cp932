@@ -34,7 +34,7 @@ function main(src: string, dst: string): void {
         prev = jcode;
     });
 
-    const json = JSON.stringify(map, null, 1);
+    const json = JSON.stringify(map, null, 1).replace(/\x7F/g, "\\u007F");
 
     console.warn("writing: " + dst);
     fs.writeFileSync(dst, json);
