@@ -20,7 +20,11 @@ const tests: Tests = {
     // html
     '"&<>?': "%22%26%3C%3E%3F",
     // control
-    "\x00\x09\x0A\x0D\x7F": "%00%09%0A%0D%7F"
+    "\x00\x09\x0A\x0D\x7F": "%00%09%0A%0D%7F",
+    // NEC extensions
+    "NEC-﨑鄧髙": "NEC-%ED%95%EE%9D%EE%E0",
+    // IBM extensions not supported for encoding
+    // "IBM-﨑鄧髙": "IBM-%FA%B1%FB%B9%FB%FC",
 };
 
 describe(TITLE, function () {

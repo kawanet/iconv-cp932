@@ -18,7 +18,11 @@ const tests: Tests = {
     // ascii
     "AB=01&yz=[]": "41423D303126797A3D5B5D",
     // control
-    "\x00\x09\x0A\x0D\x7F": "00090A0D7F"
+    "\x00\x09\x0A\x0D\x7F": "00090A0D7F",
+    // NEC extensions
+    "NEC-﨑鄧髙": "4E45432DED95EE9DEEE0",
+    // IBM extensions supported for decoding
+    "IBM-﨑鄧髙": "49424D2DFAB1FBB9FBFC",
 };
 
 describe(TITLE, function () {

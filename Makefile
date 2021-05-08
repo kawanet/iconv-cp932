@@ -8,17 +8,19 @@ all: $(ALL) build/test.js
 test: all mocha
 
 clean:
-	/bin/rm -f $(ALL) build/*.js src/*.js test/*.js mappings/*.json
+	/bin/rm -f $(ALL) build/*.js src/*.js test/*.js mappings/cp932.json
 
 $(MIN_JS): build/bundle.js
 	./node_modules/.bin/terser -c -m -o $@ $<
 
-build/bundle.js: src/iconv-cp932.js mappings/cp932.json
+build/bundle.js: src/iconv-cp932.js mappings/cp932.json mappings/ibm.json
 	mkdir -p build
-	echo 'var IconvCP932 = (function(mapping, exports) {' > $@
+	echo 'var IconvCP932 = (function(CP932, IBM, exports) {' > $@
 	cat src/iconv-cp932.js >> $@
 	echo 'return exports;})(' >> $@
 	cat mappings/cp932.json >> $@
+	echo ',' >> $@
+	cat mappings/ibm.json >> $@
 	echo ', ("undefined" !== typeof exports ? exports : {}))' >> $@
 	perl -i -pe 's#^ *("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)#// $$&#mg' $@
 	perl -i -pe 's#^ *(var .* = require\()#// $$&#mg' $@

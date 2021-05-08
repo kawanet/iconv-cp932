@@ -6,7 +6,9 @@
 
 type Mapping = { [hex: string]: string };
 
-const mapping: Mapping = require("../mappings/cp932.json");
+const CP932: Mapping = require("../mappings/cp932.json");
+const IBM: Mapping = require("../mappings/ibm.json");
+
 let encodeTable: { [c: string]: string };
 let decodeTable: { [c: string]: string };
 let encodeBinTable: { [c: string]: number };
@@ -55,7 +57,7 @@ export function decodeURIComponent(str: string): string {
 export function encode(str: string): Uint8Array {
     if (!encodeBinTable) {
         encodeBinTable = {};
-        parseMapping((jcode, ustr) => encodeBinTable[ustr] = jcode);
+        encoderMapping((jcode, ustr) => encodeBinTable[ustr] = jcode);
     }
 
     let {length} = str;
@@ -102,7 +104,7 @@ export function decode(input: Uint8Array): string {
 
     if (!decodeBinTable) {
         decodeBinTable = new Array(65536);
-        parseMapping((jcode, ustr) => decodeBinTable[jcode] = ustr);
+        decoderMapping((jcode, ustr) => decodeBinTable[jcode] = ustr);
     }
 
     let str = "";
@@ -133,7 +135,7 @@ function getUnknownBuf() {
 function getEncodeTable() {
     const table = {} as typeof encodeTable;
 
-    parseMapping((jcode, ustr) => {
+    encoderMapping((jcode, ustr) => {
         let jstr: string;
         if (jcode > 255) {
             jstr = "%" + hex(jcode >> 8) + "%" + hex(jcode & 255);
@@ -156,7 +158,7 @@ function hex(code: number): string {
 function getDecodeTable() {
     const table = {} as typeof decodeTable;
 
-    parseMapping((jcode, ustr) => {
+    decoderMapping((jcode, ustr) => {
         let jstr = String.fromCharCode(jcode & 255);
         if (jcode > 255) {
             jstr = String.fromCharCode(jcode >> 8) + jstr;
@@ -167,7 +169,16 @@ function getDecodeTable() {
     return table;
 }
 
-function parseMapping(fn: (jcode: number, ustr: string) => void) {
+function decoderMapping(fn: (jcode: number, ustr: string) => void) {
+    applyMapping(CP932, fn);
+    applyMapping(IBM, fn);
+}
+
+function encoderMapping(fn: (jcode: number, ustr: string) => void) {
+    applyMapping(CP932, fn);
+}
+
+function applyMapping(mapping: Mapping, fn: (jcode: number, ustr: string) => void) {
     Object.keys(mapping).forEach(start => {
         let jcode = parseInt(start, 16);
         mapping[start].split("").forEach(ustr => fn(jcode++, ustr));
