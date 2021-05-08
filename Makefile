@@ -15,7 +15,7 @@ $(MIN_JS): build/bundle.js
 
 build/bundle.js: src/iconv-cp932.js mappings/cp932.json
 	mkdir -p build
-	echo 'var IconvCP932 = (function(component_1, mapping, exports) {' > $@
+	echo 'var IconvCP932 = (function(component, mapping, exports) {' > $@
 	cat src/iconv-cp932.js >> $@
 	echo 'return exports;' >> $@
 	echo '})({encode: encodeURIComponent},' >> $@

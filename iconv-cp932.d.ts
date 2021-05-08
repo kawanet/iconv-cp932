@@ -8,6 +8,12 @@ export const UNKNOWN: string;
 
 /**
  * @param str {string} UTF-8 string e.g. "美"
+ * @return {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
+ */
+export function encode(str: string): Uint8Array;
+
+/**
+ * @param str {string} UTF-8 string e.g. "美"
  * @return {string} CP932 URI encoded string e.g. "%94%FC"
  */
 export function encodeURIComponent(str: string): string;

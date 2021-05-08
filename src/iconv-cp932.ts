@@ -4,7 +4,7 @@
  * @see https://www.npmjs.com/package/iconv-cp932
  */
 
-import {encode} from "./component";
+import * as component from "./component";
 
 type Table = { [c: string]: string };
 type Mapping = { [hex: string]: string };
@@ -12,6 +12,7 @@ type Mapping = { [hex: string]: string };
 const mapping: Mapping = require("../mappings/cp932.json");
 let encodeTable: Table;
 let decodeTable: Table;
+let encodeBinTable: { [c: string]: number };
 let decodeBinTable: string[];
 
 /**
@@ -43,6 +44,39 @@ export function decodeURIComponent(str: string): string {
     return unescape(str).replace(/[\x80-\x9F\xE0-\xFF]?[\x00-\xFF]/g, s => {
         return decodeTable[s] || unknown || (unknown = decodeTable[unescape(UNKNOWN)]);
     });
+}
+
+/**
+ * @param str {string} UTF-8 string e.g. "美"
+ * @return {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
+ */
+
+export function encode(str: string): Uint8Array {
+    if (!encodeBinTable) {
+        encodeBinTable = {};
+        parseMapping((jcode, ustr) => encodeBinTable[ustr] = jcode);
+    }
+
+    let {length} = str;
+    const buffer = new Uint8Array(length * 2);
+    let unknown: number;
+    let i = 0;
+    let cur = 0;
+    while (i < length) {
+        let code = encodeBinTable[str[i++]]; // code 0 is valid
+        if (code == null) {
+            code = unknown || (unknown = encodeBinTable[decodeURIComponent(UNKNOWN)]);
+        }
+        if (code < 256) {
+            buffer[cur++] = code;
+        } else {
+            buffer[cur++] = code >> 8;
+            buffer[cur++] = code & 255;
+        }
+    }
+
+    if (cur === length * 2) return buffer;
+    return buffer.slice(0, cur);
 }
 
 /**
