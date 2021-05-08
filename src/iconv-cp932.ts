@@ -12,6 +12,7 @@ type Mapping = { [hex: string]: string };
 const mapping: Mapping = require("../mappings/cp932.json");
 let encodeTable: Table;
 let decodeTable: Table;
+let decodeBinTable: string[];
 
 /**
  * GETA MARK "〓"
@@ -42,6 +43,34 @@ export function decodeURIComponent(str: string): string {
     return unescape(str).replace(/[\x80-\x9F\xE0-\xFF]?[\x00-\xFF]/g, s => {
         return decodeTable[s] || unknown || (unknown = decodeTable[unescape(UNKNOWN)]);
     });
+}
+
+/**
+ * @param buffer {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
+ * @return {string} UTF-8 string e.g. "美"
+ */
+
+export function decode(input: Uint8Array): string {
+    let i = 0;
+    let {length} = input;
+    let unknown: string;
+
+    if (!decodeBinTable) {
+        decodeBinTable = new Array(65536);
+        parseMapping((jcode, ustr) => decodeBinTable[jcode] = ustr);
+    }
+
+    let str = "";
+    while (i < length) {
+        let c = input[i++];
+        if ((0x80 <= c && c <= 0x9F) || (0xE0 <= c && c <= 0xFF)) {
+            const low = input[i++];
+            c = (c << 8) | low;
+        }
+        str += decodeBinTable[c] || unknown || (unknown = decodeURIComponent(UNKNOWN));
+    }
+
+    return str;
 }
 
 /**
