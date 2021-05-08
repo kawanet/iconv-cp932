@@ -15,10 +15,9 @@ $(MIN_JS): build/bundle.js
 
 build/bundle.js: src/iconv-cp932.js mappings/cp932.json
 	mkdir -p build
-	echo 'var IconvCP932 = (function(component, mapping, exports) {' > $@
+	echo 'var IconvCP932 = (function(mapping, exports) {' > $@
 	cat src/iconv-cp932.js >> $@
-	echo 'return exports;' >> $@
-	echo '})({encode: encodeURIComponent},' >> $@
+	echo 'return exports;})(' >> $@
 	cat mappings/cp932.json >> $@
 	echo ', ("undefined" !== typeof exports ? exports : {}))' >> $@
 	perl -i -pe 's#^ *("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)#// $$&#mg' $@

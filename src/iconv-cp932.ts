@@ -4,8 +4,6 @@
  * @see https://www.npmjs.com/package/iconv-cp932
  */
 
-import * as component from "./component";
-
 type Mapping = { [hex: string]: string };
 
 const mapping: Mapping = require("../mappings/cp932.json");
@@ -27,11 +25,13 @@ let unknownCache = {} as { [str: string]: Uint8Array };
  * @return {string} CP932 URI encoded string e.g. "%94%FC"
  */
 
-export function encodeURIComponent(str: string): string {
+function _encodeURIComponent(str: string): string {
     if (!encodeTable) encodeTable = getEncodeTable();
 
     return str.replace(/./sg, c => encodeTable[c] || UNKNOWN);
 }
+
+export {_encodeURIComponent as encodeURIComponent};
 
 /**
  * @param str {string} CP932 URI encoded string e.g. "%94%FC"
@@ -132,7 +132,6 @@ function getUnknownBuf() {
 
 function getEncodeTable() {
     const table = {} as typeof encodeTable;
-    const encodeURIComponent = component.encode;
 
     parseMapping((jcode, ustr) => {
         let jstr: string;
