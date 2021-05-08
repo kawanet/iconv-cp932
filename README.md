@@ -1,35 +1,51 @@
 # iconv-cp932
 
-encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)
+[![Node.js CI](https://github.com/kawanet/iconv-cp932/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/iconv-cp932/actions/)
+[![npm version](https://badge.fury.io/js/iconv-cp932.svg)](https://badge.fury.io/js/iconv-cp932)
+
+Lightweight Pure JS character encoding conversion for CP932, Shift_JIS, Windows-31J, IBM 932
+
+| method | input encoding | input type | output encoding | output type |
+|----|----|----|----|----|
+| `encode()` | UTF-8 | `string` | CP932 | `Uint8Array` |
+| `decode()` | CP932 | `Uint8Array` | UTF-8 | `string` |
+| `encodeURIComponent()` | UTF-8 | `string` | CP932 URL encoded | `string` |
+| `decodeURIComponent()` | CP932 URL encoded | `string` | UTF-8 | `string` |
+
+See TypeScript declaration
+[iconv-cp932.d.ts](https://github.com/kawanet/iconv-cp932/blob/master/iconv-cp932.d.ts)
+for more details.
 
 ## Node.js
 
-```sh
-npm install iconv-cp932
-```
-
 ```js
-var IconvCP932 = require("iconv-cp932");
+const IconvCP932 = require("iconv-cp932");
 
-var unicode = "美しい日本語";
+const unicode = "美しい日本語";
 
-var encoded = IconvCP932.encodeURIComponent(unicode);
+const array = IconvCP932.encode(unicode);
+console.log(array); // => Uint8Array(12) [ 148, 252, 130, 181, 130, 162, 147, 250, 150, 123, 140, 234 ]
+
+const string = IconvCP932.decode(array);
+console.log(string); // => "美しい日本語"
+
+const encoded = IconvCP932.encodeURIComponent(unicode);
 console.log(encoded); // => "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"
 
-var decoded = IconvCP932.decodeURIComponent(encoded);
+const decoded = IconvCP932.decodeURIComponent(encoded);
 console.log(decoded); // => "美しい日本語"
 ```
 
 ## Browser
 
 ```html
-<script src="iconv-cp932.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js" charset="utf-8"></script>
 <script>
   function tap() {
-    var str = document.getElementById("input").value;
-    var prefix = "data:application/octet-stream;charset=Shift_JIS,";
-    // var prefix = "data:text/comma-separated-values;charset=Shift_JIS,";
-    var href = prefix + IconvCP932.encodeURIComponent(str);
+    const str = document.getElementById("input").value;
+    const prefix = "data:application/octet-stream;charset=Shift_JIS,";
+    // const prefix = "data:text/comma-separated-values;charset=Shift_JIS,";
+    const href = prefix + IconvCP932.encodeURIComponent(str);
     window.open(href, "_blank");
   }
 </script>
@@ -40,12 +56,12 @@ console.log(decoded); // => "美しい日本語"
 ## Links
 
 - Sources on GitHub - https://github.com/kawanet/iconv-cp932
-- Browser Build - https://rawgit.com/kawanet/iconv-cp932/master/public/iconv-cp932.min.js (24KB)
+- Browser Build - https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js (25KB)
 - Live Demo - http://kawanet.github.io/iconv-cp932/demo/
 
 ## MIT Licence
 
-Copyright 2014-2019 @kawanet Yusuke Kawasaki
+Copyright 2014-2021 @kawanet Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

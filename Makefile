@@ -1,38 +1,49 @@
 #!/usr/bin/env bash -c make
 
 MIN_JS=public/iconv-cp932.min.js
-TMP_JS=tmp/iconv-cp932.browserify.js
-SRC_JS=index.js
-MAPPING_TXT=mappings/CP932.TXT
-MAPPING_JSON=mappings/cp932.json
+ALL=$(MIN_JS)
 
-CLASS=IconvCP932
+all: $(ALL) build/test.js
 
-ALL=$(MIN_JS) $(TMP_JS)
-
-all: $(MIN_JS)
-
-test: all jshint mocha
+test: all mocha
 
 clean:
-	/bin/rm -f $(ALL)
+	/bin/rm -f $(ALL) build/*.js src/*.js test/*.js mappings/cp932.json
 
-$(MIN_JS): $(TMP_JS)
-	./node_modules/.bin/uglifyjs -c -m -o $@ $<
+$(MIN_JS): build/bundle.js
+	./node_modules/.bin/terser -c -m -o $@ $<
 
-$(TMP_JS): $(SRC_JS) $(MAPPING_JSON)
-	./node_modules/.bin/browserify $(SRC_JS) -s $(CLASS) -o $@ --debug
+build/bundle.js: src/iconv-cp932.js mappings/cp932.json mappings/ibm.json
+	mkdir -p build
+	echo 'var IconvCP932 = (function(CP932, IBM, exports) {' > $@
+	cat src/iconv-cp932.js >> $@
+	echo 'return exports;})(' >> $@
+	cat mappings/cp932.json >> $@
+	echo ',' >> $@
+	cat mappings/ibm.json >> $@
+	echo ', ("undefined" !== typeof exports ? exports : {}))' >> $@
+	perl -i -pe 's#^ *("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)#// $$&#mg' $@
+	perl -i -pe 's#^ *(var .* = require\()#// $$&#mg' $@
 
-$(MAPPING_TXT):
-	grep -v "^#" mappings/README.md | xargs curl -o $@
+mappings/CP932.TXT:
+	grep -v "^#" mappings/README.md | grep http | xargs curl -o $@
 
-$(MAPPING_JSON): $(MAPPING_TXT)
-	./script/make-table.js
+mappings/cp932.json: mappings/CP932.TXT src/make-table.js
+	node src/make-table.js $< $@
 
-mocha:
+mocha: test/*.js
 	./node_modules/.bin/mocha test
 
-jshint:
-	./node_modules/.bin/jshint .
+src/%.js: src/%.ts
+	./node_modules/.bin/tsc -p .
+
+test/%.js: test/%.ts
+	./node_modules/.bin/tsc -p .
+
+build/test.js: test/*.js
+	./node_modules/.bin/browserify --list ./test/[0-7]*.js \
+		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ]
+	./node_modules/.bin/browserify -o $@ ./test/[0-7]*.js \
+		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ]
 
 .PHONY: all clean test

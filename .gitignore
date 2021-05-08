@@ -1,7 +1,16 @@
-*.browserify.js
+*.tgz
 *~
 .DS_Store
 .Thumbs
+._*
 .idea/
+.vscode/
+build/
 node_modules/
+npm-debug.log*
+package-lock.json
+script/*.js
+src/*.js
+test/*.js
 tmp/
+~$*

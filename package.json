@@ -1,28 +1,32 @@
 {
   "name": "iconv-cp932",
-  "description": "encodeURIComponent and decodeURIComponent for CP932 (Shift_JIS)",
-  "version": "1.0.1",
+  "description": "Lightweight Pure JS character encoding conversion for CP932, Shift_JIS, Windows-31J, IBM 932",
+  "version": "1.1.0",
   "author": "kawanet",
   "bugs": {
     "url": "https://github.com/kawanet/iconv-cp932/issues"
   },
   "devDependencies": {
-    "browserify": "^16.2.3",
-    "jshint": "^2.10.2",
-    "mocha": "^6.1.4",
-    "uglify-js": "^3.5.15"
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.44",
+    "browserify": "^17.0.0",
+    "browserify-sed": "^0.8.0",
+    "mocha": "^8.4.0",
+    "terser": "^5.7.0",
+    "typescript": "^4.2.4"
   },
+  "files": [
+    "browser/import.js",
+    "mappings/*.json",
+    "mappings/README.md",
+    "public/*.min.js",
+    "src/*.js",
+    "*.js",
+    "LICENSE",
+    "README.md",
+    "*.d.ts"
+  ],
   "homepage": "https://github.com/kawanet/iconv-cp932#readme",
-  "jshintConfig": {
-    "globals": {
-      "unescape": true
-    },
-    "mocha": true,
-    "node": true,
-    "undef": true,
-    "unused": true,
-    "validthis": true
-  },
   "keywords": [
     "CP932",
     "Shift_JIS",
@@ -37,11 +41,10 @@
     "url": "git+https://github.com/kawanet/iconv-cp932.git"
   },
   "scripts": {
+    "build": "make",
     "fixpack": "fixpack",
-    "jshint": "./node_modules/.bin/jshint .",
-    "make": "make",
-    "mocha": "./node_modules/.bin/mocha test",
-    "test": "npm run jshint && npm run mocha"
+    "prepack": "npm run build && npm test",
+    "test": "make test"
   },
   "typings": "iconv-cp932.d.ts"
 }
