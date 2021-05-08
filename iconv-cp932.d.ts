@@ -13,13 +13,13 @@ export const UNKNOWN: string;
 export function encodeURIComponent(str: string): string;
 
 /**
- * @param str {string} CP932 URI encoded string e.g. "%94%FC"
- * @return {string} UTF-8 string e.g. "美"
- */
-export function decodeURIComponent(str: string): string;
-
-/**
  * @param buffer {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
  * @return {string} UTF-8 string e.g. "美"
  */
 export function decode(input: Uint8Array): string;
+
+/**
+ * @param str {string} CP932 URI encoded string e.g. "%94%FC"
+ * @return {string} UTF-8 string e.g. "美"
+ */
+export function decodeURIComponent(str: string): string;
