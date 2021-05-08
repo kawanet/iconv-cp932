@@ -20,6 +20,7 @@ let decodeBinTable: string[];
 
 export let UNKNOWN = "%81%AC";
 let unknownSize = 2;
+let unknownCache = {} as { [str: string]: Uint8Array };
 
 /**
  * @param str {string} UTF-8 string e.g. "美"
@@ -67,7 +68,7 @@ export function encode(str: string): Uint8Array {
         let code = encodeBinTable[str[i++]]; // code 0 is valid
         if (code == null) {
             if (!unknown) {
-                unknown = encode(decodeURIComponent(UNKNOWN));
+                unknown = getUnknownBuf();
                 const size = unknown.length;
                 if (size !== unknownSize) {
                     unknownSize = size;
@@ -120,6 +121,14 @@ export function decode(input: Uint8Array): string {
 /**
  * @private
  */
+
+function getUnknownBuf() {
+    const str = UNKNOWN;
+    const buf = unknownCache[str];
+    if (buf) return buf;
+    unknownCache = {}; // reset
+    return unknownCache[str] = encode(decodeURIComponent(str));
+}
 
 function getEncodeTable() {
     const table = {} as typeof encodeTable;
