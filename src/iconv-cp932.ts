@@ -19,6 +19,7 @@ let decodeBinTable: string[];
  */
 
 export let UNKNOWN = "%81%AC";
+let unknownSize = 2;
 
 /**
  * @param str {string} UTF-8 string e.g. "美"
@@ -41,7 +42,7 @@ export function decodeURIComponent(str: string): string {
     let unknown: string;
 
     return unescape(str).replace(/[\x80-\x9F\xE0-\xFF][\x00-\xFF]|[\xA0-\xDF]/g, s => {
-        return decodeTable[s] || unknown || (unknown = decodeTable[unescape(UNKNOWN)]);
+        return decodeTable[s] || unknown || (unknown = decodeURIComponent(UNKNOWN));
     });
 }
 
@@ -57,16 +58,26 @@ export function encode(str: string): Uint8Array {
     }
 
     let {length} = str;
-    const buffer = new Uint8Array(length * 2);
-    let unknown: number;
+    const bufSize = length * Math.max(unknownSize, 2);
+    const buffer = new Uint8Array(bufSize);
+    let unknown: Uint8Array;
     let i = 0;
     let cur = 0;
     while (i < length) {
         let code = encodeBinTable[str[i++]]; // code 0 is valid
         if (code == null) {
-            code = unknown || (unknown = encodeBinTable[decodeURIComponent(UNKNOWN)]);
-        }
-        if (code < 256) {
+            if (!unknown) {
+                unknown = encode(decodeURIComponent(UNKNOWN));
+                const size = unknown.length;
+                if (size !== unknownSize) {
+                    unknownSize = size;
+                    return encode(str); // retry with resized buffer
+                }
+            }
+            for (let j = 0; j < unknownSize; j++) {
+                buffer[cur++] = unknown[j];
+            }
+        } else if (code < 256) {
             buffer[cur++] = code;
         } else {
             buffer[cur++] = code >> 8;
@@ -74,12 +85,12 @@ export function encode(str: string): Uint8Array {
         }
     }
 
-    if (cur === length * 2) return buffer;
+    if (cur === bufSize) return buffer;
     return buffer.slice(0, cur);
 }
 
 /**
- * @param buffer {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
+ * @param input {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
  * @return {string} UTF-8 string e.g. "美"
  */
 

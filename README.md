@@ -12,6 +12,12 @@ const IconvCP932 = require("iconv-cp932");
 
 const unicode = "美しい日本語";
 
+const array = IconvCP932.encode(unicode);
+console.log(array); // => Uint8Array(12) [ 148, 252, 130, 181, 130, 162, 147, 250, 150, 123, 140, 234 ]
+
+const string = IconvCP932.decode(array);
+console.log(string); // => "美しい日本語"
+
 const encoded = IconvCP932.encodeURIComponent(unicode);
 console.log(encoded); // => "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"
 

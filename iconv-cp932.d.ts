@@ -19,7 +19,7 @@ export function encode(str: string): Uint8Array;
 export function encodeURIComponent(str: string): string;
 
 /**
- * @param buffer {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
+ * @param input {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
  * @return {string} UTF-8 string e.g. "美"
  */
 export function decode(input: Uint8Array): string;
