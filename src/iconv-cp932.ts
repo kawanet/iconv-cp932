@@ -18,7 +18,7 @@ let decodeBinTable: string[];
  * GETA MARK "〓"
  */
 
-export const UNKNOWN = "%81%AC";
+export let UNKNOWN = "%81%AC";
 
 /**
  * @param str {string} UTF-8 string e.g. "美"
@@ -40,7 +40,7 @@ export function decodeURIComponent(str: string): string {
     if (!decodeTable) decodeTable = getDecodeTable();
     let unknown: string;
 
-    return unescape(str).replace(/[\x80-\x9F\xE0-\xFF]?[\x00-\xFF]/g, s => {
+    return unescape(str).replace(/[\x80-\x9F\xE0-\xFF][\x00-\xFF]|[\xA0-\xDF]/g, s => {
         return decodeTable[s] || unknown || (unknown = decodeTable[unescape(UNKNOWN)]);
     });
 }

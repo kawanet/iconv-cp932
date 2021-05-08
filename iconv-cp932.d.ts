@@ -4,7 +4,7 @@
  * @see https://www.npmjs.com/package/iconv-cp932
  */
 
-export const UNKNOWN: string;
+export let UNKNOWN: string;
 
 /**
  * @param str {string} UTF-8 string e.g. "美"
