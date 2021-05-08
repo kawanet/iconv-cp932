@@ -39,7 +39,7 @@ export function decodeURIComponent(str: string): string {
     if (!decodeTable) decodeTable = getDecodeTable();
     let unknown: string;
 
-    return unescape(str).replace(/[\x80-\x9F\xE0-\xFF]?[\x00-\xFF]/g, function (s) {
+    return unescape(str).replace(/[\x80-\x9F\xE0-\xFF]?[\x00-\xFF]/g, s => {
         return decodeTable[s] || unknown || (unknown = decodeTable[unescape(UNKNOWN)]);
     });
 }
@@ -50,46 +50,45 @@ export function decodeURIComponent(str: string): string {
 
 function getEncodeTable(): Table {
     const table: Table = {};
+    const encodeURIComponent = encode;
 
-    Object.keys(mapping).forEach(start => {
-        let jcode = parseInt(start, 16);
-        mapping[start].split("").forEach(ustr => {
-            let jstr: string;
-            if (jcode > 255) {
-                jstr = "%" + hex(jcode >> 8) + "%" + hex(jcode & 255);
-            } else if (ustr === encode(ustr)) {
-                jstr = ustr;
-            } else {
-                jstr = "%" + hex(jcode);
-            }
-            table[ustr] = jstr;
-            jcode++;
-        });
+    parseMapping((jcode, ustr) => {
+        let jstr: string;
+        if (jcode > 255) {
+            jstr = "%" + hex(jcode >> 8) + "%" + hex(jcode & 255);
+        } else if (ustr === encodeURIComponent(ustr)) {
+            jstr = ustr;
+        } else {
+            jstr = "%" + hex(jcode);
+        }
+        table[ustr] = jstr;
     });
 
     return table;
+}
 
-    function hex(code: number): string {
-        const c = (code).toString(16).toUpperCase();
-        return (code < 16 ? ("0" + c) : c);
-    }
+function hex(code: number): string {
+    const c = (code).toString(16).toUpperCase();
+    return (code < 16 ? ("0" + c) : c);
 }
 
 function getDecodeTable(): Table {
     const table: Table = {};
 
-    Object.keys(mapping).forEach(start => {
-        let jcode = parseInt(start, 16);
-
-        mapping[start].split("").forEach(ustr => {
-            let jstr = String.fromCharCode(jcode & 255);
-            if (jcode > 255) {
-                jstr = String.fromCharCode(jcode >> 8) + jstr;
-            }
-            table[jstr] = ustr;
-            jcode++;
-        });
+    parseMapping((jcode, ustr) => {
+        let jstr = String.fromCharCode(jcode & 255);
+        if (jcode > 255) {
+            jstr = String.fromCharCode(jcode >> 8) + jstr;
+        }
+        table[jstr] = ustr;
     });
 
     return table;
+}
+
+function parseMapping(fn: (jcode: number, ustr: string) => void) {
+    Object.keys(mapping).forEach(start => {
+        let jcode = parseInt(start, 16);
+        mapping[start].split("").forEach(ustr => fn(jcode++, ustr));
+    });
 }
