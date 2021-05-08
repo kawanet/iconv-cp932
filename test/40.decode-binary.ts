@@ -1,6 +1,7 @@
 #!/usr/bin/env mocha -R spec
 
 import {strict as assert} from "assert";
+import * as IconvCP932 from "../";
 
 const TITLE = __filename.split("/").pop();
 
@@ -21,7 +22,6 @@ const tests: Tests = {
 };
 
 describe(TITLE, function () {
-    const IconvCP932 = require("../index");
 
     Object.keys(tests).forEach(str => {
         it(JSON.stringify(tests[str]), () => {
