@@ -6,12 +6,11 @@
 
 import * as component from "./component";
 
-type Table = { [c: string]: string };
 type Mapping = { [hex: string]: string };
 
 const mapping: Mapping = require("../mappings/cp932.json");
-let encodeTable: Table;
-let decodeTable: Table;
+let encodeTable: { [c: string]: string };
+let decodeTable: { [c: string]: string };
 let encodeBinTable: { [c: string]: number };
 let decodeBinTable: string[];
 
@@ -111,9 +110,9 @@ export function decode(input: Uint8Array): string {
  * @private
  */
 
-function getEncodeTable(): Table {
-    const table: Table = {};
-    const encodeURIComponent = encode;
+function getEncodeTable() {
+    const table = {} as typeof encodeTable;
+    const encodeURIComponent = component.encode;
 
     parseMapping((jcode, ustr) => {
         let jstr: string;
@@ -135,8 +134,8 @@ function hex(code: number): string {
     return (code < 16 ? ("0" + c) : c);
 }
 
-function getDecodeTable(): Table {
-    const table: Table = {};
+function getDecodeTable() {
+    const table = {} as typeof decodeTable;
 
     parseMapping((jcode, ustr) => {
         let jstr = String.fromCharCode(jcode & 255);
