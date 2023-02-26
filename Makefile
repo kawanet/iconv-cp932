@@ -18,19 +18,15 @@ index.mjs: build/esm/iconv-cp932.bundle.js
 public/iconv-cp932.min.js: build/es5/iconv-cp932.wrap.js
 	@mkdir -p public/
 	./node_modules/.bin/terser -c -m -o $@ -- $<
+	ls -l $@
 
 build/%.wrap.js: build/%.bundle.js
 	echo 'var IconvCP932 = (function(exports) {' > $@
-	cat $< >> $@
+	egrep -v '^\s*("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)' $< >> $@
 	echo 'return exports; })("undefined" !== typeof exports ? exports : {})' >> $@
 
 build/%.bundle.js: build/%.js mappings/cp932.json mappings/ibm.json
-	node -e '\
-		let src = require("fs").readFileSync(process.argv[1], "utf-8");\
-		src = src.replace(/^(\s*)("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)/mg, "$$1// $$2");\
-		src = src.replace(/require\(".([^"]+)"\)/mg, (_, file) => fs.readFileSync(file, "utf-8"));\
-		process.stdout.write(src);\
-	' $< > $@
+	node -e 'const {readFileSync} = require("fs"); process.stdout.write(readFileSync(process.argv[1], "utf-8").replace(/require\(".([^"]+)"\)/mg, (_, file) => readFileSync(file, "utf-8")));' $< > $@
 
 mappings/CP932.TXT:
 	grep -v "^#" mappings/README.md | grep http | xargs curl -o $@
