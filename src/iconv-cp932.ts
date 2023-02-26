@@ -62,21 +62,21 @@ export function decodeURIComponent(str: string): string {
 
 export function encode(str: string): Uint8Array {
     const encodeBinTable = getEncodeBinTable();
-
-    let {length} = str;
-    const bufSize = length * Math.max(unknownSize, 2);
+    const {length} = str;
+    const chrSize = Math.max(unknownSize, 2);
+    const bufSize = length * chrSize;
     const buffer = new Uint8Array(bufSize);
     let unknown: Uint8Array;
     let i = 0;
     let cur = 0;
+
     while (i < length) {
         let code = encodeBinTable[str[i++]]; // code 0 is valid
         if (code == null) {
             if (!unknown) {
                 unknown = cachedEncode(UNKNOWN);
-                const size = unknown.length;
-                if (size !== unknownSize) {
-                    unknownSize = size;
+                unknownSize = unknown.length;
+                if (unknownSize > chrSize) {
                     return encode(str); // retry with resized buffer
                 }
             }
@@ -101,12 +101,11 @@ export function encode(str: string): Uint8Array {
  */
 
 export function decode(buffer: Uint8Array): string {
-    let i = 0;
-    let {length} = buffer;
-
+    const {length} = buffer;
     const decodeBinTable = getDecodeBinTable();
-
     let str = "";
+    let i = 0;
+
     while (i < length) {
         let c = buffer[i++];
         if ((0x80 <= c && c <= 0x9F) || (0xE0 <= c && c <= 0xFF)) {
