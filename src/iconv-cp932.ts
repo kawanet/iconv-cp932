@@ -147,10 +147,10 @@ const getEncodeTable = lazy(() => {
     return table;
 });
 
-function hex(code: number): string {
+const hex = (code: number): string => {
     const c = (code).toString(16).toUpperCase();
     return (code < 16 ? ("0" + c) : c);
-}
+};
 
 const getDecodeTable = lazy(() => {
     const table: { [c: string]: string } = {};
@@ -172,10 +172,10 @@ const getDecodeBinTable = lazy(() => {
     return table;
 });
 
-function decoderMapping(fn: (jcode: number, ustr: string) => void) {
+const decoderMapping = (fn: (jcode: number, ustr: string) => void) => {
     applyMapping(CP932, fn);
     applyMapping(IBM, fn);
-}
+};
 
 const getEncodeBinTable = lazy(() => {
     const table: { [c: string]: number } = {};
@@ -183,13 +183,13 @@ const getEncodeBinTable = lazy(() => {
     return table;
 });
 
-function encoderMapping(fn: (jcode: number, ustr: string) => void) {
+const encoderMapping = (fn: (jcode: number, ustr: string) => void) => {
     applyMapping(CP932, fn);
-}
+};
 
-function applyMapping(mapping: Mapping, fn: (jcode: number, ustr: string) => void) {
+const applyMapping = (mapping: Mapping, fn: (jcode: number, ustr: string) => void) => {
     Object.keys(mapping).forEach(start => {
         let jcode = parseInt(start, 16);
         mapping[start].split("").forEach(ustr => fn(jcode++, ustr));
     });
-}
+};
