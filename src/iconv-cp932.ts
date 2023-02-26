@@ -96,21 +96,21 @@ export function encode(str: string): Uint8Array {
 }
 
 /**
- * @param input {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
+ * @param buffer {Uint8Array} CP932 Binary e.g. [0x94, 0xFC]
  * @return {string} UTF-8 string e.g. "美"
  */
 
-export function decode(input: Uint8Array): string {
+export function decode(buffer: Uint8Array): string {
     let i = 0;
-    let {length} = input;
+    let {length} = buffer;
 
     const decodeBinTable = getDecodeBinTable();
 
     let str = "";
     while (i < length) {
-        let c = input[i++];
+        let c = buffer[i++];
         if ((0x80 <= c && c <= 0x9F) || (0xE0 <= c && c <= 0xFF)) {
-            const low = input[i++];
+            const low = buffer[i++];
             c = (c << 8) | low;
         }
         str += decodeBinTable[c] || cachedDecode(UNKNOWN);
