@@ -2,6 +2,7 @@
 
 [![Node.js CI](https://github.com/kawanet/iconv-cp932/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/iconv-cp932/actions/)
 [![npm version](https://badge.fury.io/js/iconv-cp932.svg)](https://badge.fury.io/js/iconv-cp932)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/iconv-cp932/public/iconv-cp932.min.js?compression=gzip)](https://unpkg.com/iconv-cp932/public/iconv-cp932.min.js)
 
 Lightweight Pure JS character encoding conversion for CP932, Shift_JIS, Windows-31J, IBM 932
 
@@ -16,7 +17,7 @@ See TypeScript declaration
 [iconv-cp932.d.ts](https://github.com/kawanet/iconv-cp932/blob/master/iconv-cp932.d.ts)
 for more details.
 
-## Node.js
+## Node.js / CommonJS
 
 ```js
 const IconvCP932 = require("iconv-cp932");
@@ -34,6 +35,12 @@ console.log(encoded); // => "%94%FC%82%B5%82%A2%93%FA%96%7B%8C%EA"
 
 const decoded = IconvCP932.decodeURIComponent(encoded);
 console.log(decoded); // => "美しい日本語"
+```
+
+## TypeScript / ES Module
+
+```js
+import * as IconvCP932 from "iconv-cp932";
 ```
 
 ## Browser
@@ -61,7 +68,7 @@ console.log(decoded); // => "美しい日本語"
 
 ## MIT Licence
 
-Copyright 2014-2021 @kawanet Yusuke Kawasaki
+Copyright 2014-2023 @kawanet Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

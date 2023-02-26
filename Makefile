@@ -1,48 +1,54 @@
 #!/usr/bin/env bash -c make
 
-MIN_JS=public/iconv-cp932.min.js
-ALL=$(MIN_JS)
+ALL=\
+    index.mjs \
+    public/iconv-cp932.min.js \
+    build/test.js \
 
-all: $(ALL) build/test.js
+all: $(ALL)
 
 test: all mocha
 
 clean:
-	/bin/rm -f $(ALL) build/*.js src/*.js test/*.js mappings/cp932.json
+	/bin/rm -f $(ALL) build/*.js mappings/*.js src/*.js test/*.js mappings/cp932.json
 
-$(MIN_JS): build/bundle.js
-	./node_modules/.bin/terser -c -m -o $@ $<
+index.mjs: build/esm/iconv-cp932.bundle.js
+	cp $^ $@
 
-build/bundle.js: src/iconv-cp932.js mappings/cp932.json mappings/ibm.json
-	mkdir -p build
-	echo 'var IconvCP932 = (function(CP932, IBM, exports) {' > $@
-	cat src/iconv-cp932.js >> $@
-	echo 'return exports;})(' >> $@
-	cat mappings/cp932.json >> $@
-	echo ',' >> $@
-	cat mappings/ibm.json >> $@
-	echo ', ("undefined" !== typeof exports ? exports : {}))' >> $@
-	perl -i -pe 's#^ *("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)#// $$&#mg' $@
-	perl -i -pe 's#^ *(var .* = require\()#// $$&#mg' $@
+public/iconv-cp932.min.js: build/es5/iconv-cp932.wrap.js
+	@mkdir -p public/
+	./node_modules/.bin/terser -c -m -o $@ -- $<
+	ls -l $@
+
+build/%.wrap.js: build/%.bundle.js
+	echo 'var IconvCP932 = (function(exports) {' > $@
+	egrep -v '^\s*("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)' $< >> $@
+	echo 'return exports; })("undefined" !== typeof exports ? exports : {})' >> $@
+
+build/%.bundle.js: build/%.js mappings/cp932.json mappings/ibm.json
+	node -e 'const {readFileSync} = require("fs"); process.stdout.write(readFileSync(process.argv[1], "utf-8").replace(/require\(".([^"]+)"\)/mg, (_, file) => readFileSync(file, "utf-8")));' $< > $@
 
 mappings/CP932.TXT:
-	grep -v "^#" mappings/README.md | grep http | xargs curl -o $@
+	curl -o $@ https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP932.TXT
 
-mappings/cp932.json: mappings/CP932.TXT src/make-table.js
-	node src/make-table.js $< $@
+mappings/cp932.json: mappings/CP932.TXT mappings/make-table.js
+	node mappings/make-table.js $< $@
 
 mocha: test/*.js
 	./node_modules/.bin/mocha test
 
-src/%.js: src/%.ts
-	./node_modules/.bin/tsc -p .
+build/es5/%.js: src/%.ts
+	./node_modules/.bin/tsc -p tsconfig-es5.json
 
-test/%.js: test/%.ts
-	./node_modules/.bin/tsc -p .
+build/esm/%.js: src/%.ts
+	./node_modules/.bin/tsc -p tsconfig-esm.json
+
+%.js: %.ts
+	./node_modules/.bin/tsc -p tsconfig.json
 
 build/test.js: test/*.js
 	./node_modules/.bin/browserify --list ./test/[0-7]*.js \
-		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ]
+		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ] | sort
 	./node_modules/.bin/browserify -o $@ ./test/[0-7]*.js \
 		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ]
 
