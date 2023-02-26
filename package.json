@@ -25,8 +25,8 @@
     "mappings/README.md",
     "public/*.min.js",
     "src/*.js",
-    "*.js",
-    "*.mjs",
+    "index.js",
+    "index.mjs",
     "LICENSE",
     "README.md",
     "*.d.ts"

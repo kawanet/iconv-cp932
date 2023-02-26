@@ -1,5 +1,6 @@
 {
   "include": [
+    "mappings",
     "src",
     "test"
   ],

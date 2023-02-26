@@ -10,7 +10,7 @@ all: $(ALL)
 test: all mocha
 
 clean:
-	/bin/rm -f $(ALL) build/*.js src/*.js test/*.js mappings/cp932.json
+	/bin/rm -f $(ALL) build/*.js mappings/*.js src/*.js test/*.js mappings/cp932.json
 
 index.mjs: build/esm/iconv-cp932.bundle.js
 	cp $^ $@
@@ -31,8 +31,8 @@ build/%.bundle.js: build/%.js mappings/cp932.json mappings/ibm.json
 mappings/CP932.TXT:
 	grep -v "^#" mappings/README.md | grep http | xargs curl -o $@
 
-mappings/cp932.json: mappings/CP932.TXT src/make-table.js
-	node src/make-table.js $< $@
+mappings/cp932.json: mappings/CP932.TXT mappings/make-table.js
+	node mappings/make-table.js $< $@
 
 mocha: test/*.js
 	./node_modules/.bin/mocha test
@@ -43,10 +43,7 @@ build/es5/%.js: src/%.ts
 build/esm/%.js: src/%.ts
 	./node_modules/.bin/tsc -p tsconfig-esm.json
 
-src/%.js: src/%.ts
-	./node_modules/.bin/tsc -p tsconfig.json
-
-test/%.js: test/%.ts
+%.js: %.ts
 	./node_modules/.bin/tsc -p tsconfig.json
 
 build/test.js: test/*.js
