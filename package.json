@@ -48,7 +48,7 @@
   "scripts": {
     "build": "make",
     "fixpack": "fixpack",
-    "prepack": "npm run build && npm test",
+    "prepack": "make clean all test",
     "test": "make test"
   },
   "type": "commonjs",
