@@ -16,6 +16,7 @@ index.mjs: build/esm/iconv-cp932.bundle.js
 	cp $^ $@
 
 public/iconv-cp932.min.js: build/es5/iconv-cp932.wrap.js
+	@mkdir -p public/
 	./node_modules/.bin/terser -c -m -o $@ -- $<
 
 build/%.wrap.js: build/%.bundle.js
