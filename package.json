@@ -15,6 +15,10 @@
     "terser": "^5.16.5",
     "typescript": "^4.9.5"
   },
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.js"
+  },
   "files": [
     "browser/import.js",
     "mappings/*.json",
@@ -22,6 +26,7 @@
     "public/*.min.js",
     "src/*.js",
     "*.js",
+    "*.mjs",
     "LICENSE",
     "README.md",
     "*.d.ts"
@@ -46,5 +51,6 @@
     "prepack": "npm run build && npm test",
     "test": "make test"
   },
+  "type": "commonjs",
   "typings": "iconv-cp932.d.ts"
 }

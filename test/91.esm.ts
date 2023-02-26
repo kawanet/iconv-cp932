@@ -6,7 +6,11 @@ import type * as IconvCP932JS from "../";
 const TITLE = __filename.split("/").pop();
 
 describe(TITLE, () => {
-    const IconvCP932: typeof IconvCP932JS = require("../public/iconv-cp932.min.js");
+    let IconvCP932: typeof IconvCP932JS;
+
+    before(async () => {
+        IconvCP932 = await import("../index.mjs" as string);
+    });
 
     it("encodeURIComponent()", () => {
         const encoded = IconvCP932.encodeURIComponent("美しい日本語");
