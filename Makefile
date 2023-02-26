@@ -29,7 +29,7 @@ build/%.bundle.js: build/%.js mappings/cp932.json mappings/ibm.json
 	node -e 'const {readFileSync} = require("fs"); process.stdout.write(readFileSync(process.argv[1], "utf-8").replace(/require\(".([^"]+)"\)/mg, (_, file) => readFileSync(file, "utf-8")));' $< > $@
 
 mappings/CP932.TXT:
-	grep -v "^#" mappings/README.md | grep http | xargs curl -o $@
+	curl -o $@ https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP932.TXT
 
 mappings/cp932.json: mappings/CP932.TXT mappings/make-table.js
 	node mappings/make-table.js $< $@
@@ -48,7 +48,7 @@ build/esm/%.js: src/%.ts
 
 build/test.js: test/*.js
 	./node_modules/.bin/browserify --list ./test/[0-7]*.js \
-		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ]
+		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ] | sort
 	./node_modules/.bin/browserify -o $@ ./test/[0-7]*.js \
 		-t [ browserify-sed 's#require\("../(index)?"\)#require("../browser/import")#' ]
 
