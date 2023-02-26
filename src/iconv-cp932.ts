@@ -9,18 +9,25 @@ type Mapping = { [hex: string]: string };
 const CP932: Mapping = require("../mappings/cp932.json");
 const IBM: Mapping = require("../mappings/ibm.json");
 
-let encodeTable: { [c: string]: string };
-let decodeTable: { [c: string]: string };
-let encodeBinTable: { [c: string]: number };
-let decodeBinTable: string[];
-
 /**
  * GETA MARK "〓"
  */
 
 export let UNKNOWN = "%81%AC";
 let unknownSize = 2;
-let unknownCache = {} as { [str: string]: Uint8Array };
+
+/**
+ * lazy build
+ */
+const lazy = <T>(fn: () => T): (() => T) => {
+    let v: T;
+    return () => (v || (v = fn()));
+};
+
+const cached = <U, T>(fn: (c: U) => T): ((c: U) => T) => {
+    const cache: { [c: string]: T } = {};
+    return ns => (cache[ns as string] || (cache[ns as string] = fn(ns)));
+};
 
 /**
  * @param str {string} UTF-8 string e.g. "美"
@@ -28,7 +35,7 @@ let unknownCache = {} as { [str: string]: Uint8Array };
  */
 
 function _encodeURIComponent(str: string): string {
-    if (!encodeTable) encodeTable = getEncodeTable();
+    const encodeTable = getEncodeTable();
 
     return str.replace(/./sg, c => encodeTable[c] || UNKNOWN);
 }
@@ -41,7 +48,7 @@ export {_encodeURIComponent as encodeURIComponent};
  */
 
 export function decodeURIComponent(str: string): string {
-    if (!decodeTable) decodeTable = getDecodeTable();
+    const decodeTable = getDecodeTable();
     let unknown: string;
 
     return unescape(str).replace(/[\x80-\x9F\xE0-\xFF][\x00-\xFF]|[\xA0-\xDF]/g, s => {
@@ -55,10 +62,7 @@ export function decodeURIComponent(str: string): string {
  */
 
 export function encode(str: string): Uint8Array {
-    if (!encodeBinTable) {
-        encodeBinTable = {};
-        encoderMapping((jcode, ustr) => encodeBinTable[ustr] = jcode);
-    }
+    const encodeBinTable = getEncodeBinTable();
 
     let {length} = str;
     const bufSize = length * Math.max(unknownSize, 2);
@@ -70,7 +74,7 @@ export function encode(str: string): Uint8Array {
         let code = encodeBinTable[str[i++]]; // code 0 is valid
         if (code == null) {
             if (!unknown) {
-                unknown = getUnknownBuf();
+                unknown = getUnknownBuf(UNKNOWN);
                 const size = unknown.length;
                 if (size !== unknownSize) {
                     unknownSize = size;
@@ -102,10 +106,7 @@ export function decode(input: Uint8Array): string {
     let {length} = input;
     let unknown: string;
 
-    if (!decodeBinTable) {
-        decodeBinTable = new Array(65536);
-        decoderMapping((jcode, ustr) => decodeBinTable[jcode] = ustr);
-    }
+    const decodeBinTable = getDecodeBinTable();
 
     let str = "";
     while (i < length) {
@@ -124,16 +125,12 @@ export function decode(input: Uint8Array): string {
  * @private
  */
 
-function getUnknownBuf() {
-    const str = UNKNOWN;
-    const buf = unknownCache[str];
-    if (buf) return buf;
-    unknownCache = {}; // reset
-    return unknownCache[str] = encode(decodeURIComponent(str));
-}
+const getUnknownBuf = cached((c: string) => {
+    return encode(decodeURIComponent(c));
+});
 
-function getEncodeTable() {
-    const table = {} as typeof encodeTable;
+const getEncodeTable = lazy(() => {
+    const table: { [c: string]: string } = {};
 
     encoderMapping((jcode, ustr) => {
         let jstr: string;
@@ -148,15 +145,15 @@ function getEncodeTable() {
     });
 
     return table;
-}
+});
 
 function hex(code: number): string {
     const c = (code).toString(16).toUpperCase();
     return (code < 16 ? ("0" + c) : c);
 }
 
-function getDecodeTable() {
-    const table = {} as typeof decodeTable;
+const getDecodeTable = lazy(() => {
+    const table: { [c: string]: string } = {};
 
     decoderMapping((jcode, ustr) => {
         let jstr = String.fromCharCode(jcode & 255);
@@ -167,12 +164,24 @@ function getDecodeTable() {
     });
 
     return table;
-}
+});
+
+const getDecodeBinTable = lazy(() => {
+    const table: string[] = new Array(65536);
+    decoderMapping((jcode, ustr) => table[jcode] = ustr);
+    return table;
+});
 
 function decoderMapping(fn: (jcode: number, ustr: string) => void) {
     applyMapping(CP932, fn);
     applyMapping(IBM, fn);
 }
+
+const getEncodeBinTable = lazy(() => {
+    const table: { [c: string]: number } = {};
+    encoderMapping((jcode, ustr) => table[ustr] = jcode);
+    return table;
+});
 
 function encoderMapping(fn: (jcode: number, ustr: string) => void) {
     applyMapping(CP932, fn);
