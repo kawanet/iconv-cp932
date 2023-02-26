@@ -49,10 +49,9 @@ export {_encodeURIComponent as encodeURIComponent};
 
 export function decodeURIComponent(str: string): string {
     const decodeTable = getDecodeTable();
-    let unknown: string;
 
     return unescape(str).replace(/[\x80-\x9F\xE0-\xFF][\x00-\xFF]|[\xA0-\xDF]/g, s => {
-        return decodeTable[s] || unknown || (unknown = decodeURIComponent(UNKNOWN));
+        return decodeTable[s] || cachedDecode(UNKNOWN);
     });
 }
 
@@ -74,7 +73,7 @@ export function encode(str: string): Uint8Array {
         let code = encodeBinTable[str[i++]]; // code 0 is valid
         if (code == null) {
             if (!unknown) {
-                unknown = getUnknownBuf(UNKNOWN);
+                unknown = cachedEncode(UNKNOWN);
                 const size = unknown.length;
                 if (size !== unknownSize) {
                     unknownSize = size;
@@ -104,7 +103,6 @@ export function encode(str: string): Uint8Array {
 export function decode(input: Uint8Array): string {
     let i = 0;
     let {length} = input;
-    let unknown: string;
 
     const decodeBinTable = getDecodeBinTable();
 
@@ -115,7 +113,7 @@ export function decode(input: Uint8Array): string {
             const low = input[i++];
             c = (c << 8) | low;
         }
-        str += decodeBinTable[c] || unknown || (unknown = decodeURIComponent(UNKNOWN));
+        str += decodeBinTable[c] || cachedDecode(UNKNOWN);
     }
 
     return str;
@@ -125,9 +123,11 @@ export function decode(input: Uint8Array): string {
  * @private
  */
 
-const getUnknownBuf = cached((c: string) => {
+const cachedEncode = cached((c: string) => {
     return encode(decodeURIComponent(c));
 });
+
+const cachedDecode = cached(decodeURIComponent);
 
 const getEncodeTable = lazy(() => {
     const table: { [c: string]: string } = {};
