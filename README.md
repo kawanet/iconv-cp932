@@ -17,10 +17,10 @@ See TypeScript declaration
 [iconv-cp932.d.ts](https://github.com/kawanet/iconv-cp932/blob/master/iconv-cp932.d.ts)
 for more details.
 
-## Node.js / CommonJS
+## SYNOPSIS
 
 ```js
-const IconvCP932 = require("iconv-cp932");
+import * as IconvCP932 from "iconv-cp932";
 
 const unicode = "美しい日本語";
 
@@ -37,13 +37,19 @@ const decoded = IconvCP932.decodeURIComponent(encoded);
 console.log(decoded); // => "美しい日本語"
 ```
 
-## TypeScript / ES Module
+## CJS
+
+- Both ES Modules and CommonJS supported.
 
 ```js
-import * as IconvCP932 from "iconv-cp932";
+const IconvCP932 = require("iconv-cp932");
 ```
 
-## Browser
+## WEB BROWSERS
+
+- The minified build of the library is also available for Web browsers via
+[jsDelivr CDN](https://www.jsdelivr.com/package/npm/iconv-cp932).
+- https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js" charset="utf-8"></script>
@@ -60,15 +66,15 @@ import * as IconvCP932 from "iconv-cp932";
 <button onclick="tap();">CLICK THIS</button>
 ```
 
-## Links
+## LINKS
 
 - Sources on GitHub - https://github.com/kawanet/iconv-cp932
 - Browser Build - https://cdn.jsdelivr.net/npm/iconv-cp932/public/iconv-cp932.min.js (25KB)
 - Live Demo - http://kawanet.github.io/iconv-cp932/demo/
 
-## MIT Licence
+## MIT LICENSE
 
-Copyright 2014-2023 @kawanet Yusuke Kawasaki
+Copyright (c) 2014-2023 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
