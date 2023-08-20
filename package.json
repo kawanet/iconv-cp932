@@ -54,7 +54,8 @@
     "build": "make",
     "fixpack": "fixpack",
     "prepack": "make clean all test",
-    "test": "make test"
+    "test": "make test",
+    "test-browser": "make && open browser/test.html"
   },
   "type": "commonjs",
   "typings": "./iconv-cp932.d.ts"
