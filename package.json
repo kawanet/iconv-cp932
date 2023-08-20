@@ -1,8 +1,8 @@
 {
   "name": "iconv-cp932",
   "description": "Lightweight Pure JS character encoding conversion for CP932, Shift_JIS, Windows-31J, IBM 932",
-  "version": "1.2.0",
-  "author": "kawanet",
+  "version": "1.2.1",
+  "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "bugs": {
     "url": "https://github.com/kawanet/iconv-cp932/issues"
   },
@@ -12,12 +12,17 @@
     "browserify": "^17.0.0",
     "browserify-sed": "^0.8.0",
     "mocha": "^10.2.0",
-    "terser": "^5.16.5",
-    "typescript": "^4.9.5"
+    "terser": "^5.19.2",
+    "typescript": "^5.1.6"
   },
   "exports": {
-    "import": "./index.mjs",
-    "require": "./index.js"
+    ".": {
+      "import": {
+        "default": "./index.mjs",
+        "types": "./iconv-cp932.d.ts"
+      },
+      "require": "./index.js"
+    }
   },
   "files": [
     "browser/import.js",
@@ -49,8 +54,9 @@
     "build": "make",
     "fixpack": "fixpack",
     "prepack": "make clean all test",
-    "test": "make test"
+    "test": "make test",
+    "test-browser": "make && open browser/test.html"
   },
   "type": "commonjs",
-  "typings": "iconv-cp932.d.ts"
+  "typings": "./iconv-cp932.d.ts"
 }

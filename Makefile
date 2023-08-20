@@ -10,11 +10,13 @@ all: $(ALL)
 test: all mocha
 
 clean:
-	/bin/rm -f $(ALL) build/*.js mappings/*.js src/*.js test/*.js mappings/cp932.json
+	/bin/rm -fr $(ALL) build/ mappings/*.js src/*.js test/*.js mappings/cp932.json
 
+# ES2021 - ES Module
 index.mjs: build/esm/iconv-cp932.bundle.js
 	cp $^ $@
 
+# ES5 - CommonJS for browsers
 public/iconv-cp932.min.js: build/es5/iconv-cp932.wrap.js
 	@mkdir -p public/
 	./node_modules/.bin/terser -c -m -o $@ -- $<
@@ -37,12 +39,15 @@ mappings/cp932.json: mappings/CP932.TXT mappings/make-table.js
 mocha: test/*.js
 	./node_modules/.bin/mocha test
 
+# ES5 - CommonJS
 build/es5/%.js: src/%.ts
 	./node_modules/.bin/tsc -p tsconfig-es5.json
 
+# ES2021 - ES Module
 build/esm/%.js: src/%.ts
 	./node_modules/.bin/tsc -p tsconfig-esm.json
 
+# ES2021 - CommonJS
 %.js: %.ts
 	./node_modules/.bin/tsc -p tsconfig.json
 
