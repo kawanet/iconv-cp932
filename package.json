@@ -1,7 +1,7 @@
 {
   "name": "iconv-cp932",
   "description": "Lightweight Pure JS character encoding conversion for CP932, Shift_JIS, Windows-31J, IBM 932",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "bugs": {
     "url": "https://github.com/kawanet/iconv-cp932/issues"
@@ -18,8 +18,8 @@
   "exports": {
     ".": {
       "import": {
-        "default": "./index.mjs",
-        "types": "./iconv-cp932.d.ts"
+        "types": "./iconv-cp932.d.ts",
+        "default": "./index.mjs"
       },
       "require": "./index.js"
     }
